@@ -1,0 +1,29 @@
+{
+  "name": "to-the-stars",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mark-magic && jszip-cli add dist/epub -o dist/books.zip -f",
+    "deploy": "gh-pages -d ./dist/docs --dotfiles"
+  },
+  "devDependencies": {
+    "@ffflorian/jszip-cli": "^3.4.1",
+    "@liuli-util/async": "^3.6.1",
+    "@liuli-util/markdown-util": "^0.7.1",
+    "@mark-magic/cli": "^0.1.2",
+    "@mark-magic/plugin-docs": "^0.1.2",
+    "@mark-magic/plugin-epub": "^0.1.2",
+    "@mark-magic/plugin-local": "^0.5.7",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.4.9",
+    "fs-extra": "^11.1.1",
+    "gh-pages": "^6.0.0",
+    "jszip": "^3.10.1",
+    "langchain": "^0.0.126",
+    "node-html-parser": "^6.1.5",
+    "rehype-parse": "^8.0.4",
+    "rehype-remark": "^9.1.2",
+    "remark-stringify": "^10.0.3",
+    "unified": "^10.1.2"
+  }
+}

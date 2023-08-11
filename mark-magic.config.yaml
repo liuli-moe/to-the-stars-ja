@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=./node_modules/@mark-magic/cli/dist/config.schema.json
+
+generate:
+  - name: 'web'
+    input:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./books/ja-JP/
+    output:
+      name: '@mark-magic/plugin-docs'
+      config:
+        path: dist/docs
+        public: ./static/
+        name: '魔法少女まどか☆マギカ ザ・スターズ'
+        repo: https://github.com/liuli-moe/to-the-stars-ja.git
+        theme:
+          dark: true
