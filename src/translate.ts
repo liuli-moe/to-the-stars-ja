@@ -1,19 +1,52 @@
 import { readFile, writeFile, readdir } from 'fs/promises'
 import path from 'path'
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
+import { CharacterTextSplitter, RecursiveCharacterTextSplitter, TextSplitter } from 'langchain/text_splitter'
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { HumanMessage, SystemMessage } from 'langchain/schema'
 import { AsyncArray, asyncLimiting } from '@liuli-util/async'
 import { pathExists } from 'fs-extra'
+import { encode } from 'gpt-3-encoder'
+
+class TextSplitterWithTokenize extends TextSplitter {
+  constructor(
+    private readonly options: {
+      chunkTokenSize: number
+    },
+  ) {
+    super()
+  }
+
+  async splitText(text: string): Promise<string[]> {
+    const list = text.split('\n')
+    let temp = ''
+    const r: string[] = []
+
+    for (const it of list) {
+      const t = temp + (temp === '' ? '' : '\n') + it
+      if (encode(t).length > this.options.chunkTokenSize) {
+        r.push(temp)
+        temp = it
+      } else {
+        temp = t
+      }
+    }
+    if (temp !== '') {
+      r.push(temp)
+    }
+    return r
+  }
+}
 
 const TRANSLATE_PROMPT = `
-Translate the following excerpt from an English novel into Japanese. Ensure that the translation accurately captures the tone and nuances of the original text.
-Please note that this translation project has been undertaken with the proper permissions and authorization, and complies with all relevant legal and copyright requirements.
+Please translate the English novel below into Japanese.
+Some proper nouns are listed below, please observe the following translations:
+English: Japanese
+God does not play dice with the universe. 神はサイコロを振らない
 `.trim()
 
 async function translate() {
-  const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 2000,
+  const splitter = new TextSplitterWithTokenize({
+    chunkTokenSize: 1000,
   })
   const chat = new ChatOpenAI({ temperature: 0 })
 

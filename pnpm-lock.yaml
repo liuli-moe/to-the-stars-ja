@@ -38,6 +38,9 @@ devDependencies:
   gh-pages:
     specifier: ^6.0.0
     version: 6.0.0
+  gpt-3-encoder:
+    specifier: ^1.1.4
+    version: 1.1.4
   jszip:
     specifier: ^3.10.1
     version: 3.10.1
@@ -1254,6 +1257,10 @@ packages:
       object-assign: 4.1.1
       pify: 2.3.0
       pinkie-promise: 2.0.1
+    dev: true
+
+  /gpt-3-encoder@1.1.4:
+    resolution: {integrity: sha512-fSQRePV+HUAhCn7+7HL7lNIXNm6eaFWFbNLOOGtmSJ0qJycyQvj60OvRlH7mee8xAMjBDNRdMXlMwjAbMTDjkg==}
     dev: true
 
   /graceful-fs@4.2.11:
