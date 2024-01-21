@@ -1,7 +1,32 @@
 # yaml-language-server: $schema=./node_modules/@mark-magic/cli/dist/config.schema.json
 
-generate:
-  - name: 'web'
+tasks:
+  - name: fetch
+    input:
+      name: '@mark-magic/plugin-ao3'
+      config:
+        url: https://archiveofourown.org/works/777002/chapters/1461984
+        site: ao3
+    output:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./books/en-US
+  - name: trans
+    input:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./books/en-US
+    transforms:
+      - name: '@mark-magic/plugin-doctran'
+        config:
+          # 测试，实际需要更换为 llm 翻译
+          engine: google
+          to: ja
+    output:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./books/ja-JP
+  - name: 'docs'
     input:
       name: '@mark-magic/plugin-local'
       config:
@@ -12,6 +37,21 @@ generate:
         path: dist/docs
         public: ./static/
         name: '魔法少女まどか☆マギカ ザ・スターズ'
-        repo: https://github.com/liuli-moe/to-the-stars-ja.git
-        theme:
-          dark: true
+        nav:
+          - text: GitHub
+            link: https://github.com/liuli-moe/to-the-stars-ja
+  - name: 'epub'
+    input:
+      name: '@mark-magic/plugin-local'
+      config:
+        path: ./books/ja-JP/
+    output:
+      name: '@mark-magic/plugin-epub'
+      config:
+        path: 'dist/epub/魔法少女まどか☆マギカ ザ・スターズ.epub'
+        id: tts
+        title: '魔法少女まどか☆マギカ ザ・スターズ'
+        creator: Hieronym
+        publisher: rxliuli
+        language: zh-CN
+        cover: ./static/cover.png
